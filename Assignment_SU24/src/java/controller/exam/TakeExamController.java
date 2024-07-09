@@ -5,6 +5,7 @@
 
 package controller.exam;
 
+import controller.auth.BaseRequiredLecturerAuthenticationController;
 import dal.ExamDBContext;
 import dal.GradeDBContext;
 import dal.StudentDBContext;
@@ -18,13 +19,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import model.Exam;
 import model.Grade;
+import model.Lecturer;
 import model.Student;
+import model.User;
 
 /**
  *
  * @author Nitro
  */
-public class TakeExamController extends HttpServlet {
+public class TakeExamController extends BaseRequiredLecturerAuthenticationController {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
@@ -35,7 +38,7 @@ public class TakeExamController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, User user, Lecturer lecturer)
     throws ServletException, IOException {
         StudentDBContext stuDB = new StudentDBContext();
         ExamDBContext examDB = new ExamDBContext();
@@ -69,7 +72,7 @@ public class TakeExamController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response, User user, Lecturer lecturer)
     throws ServletException, IOException {
         int cid = Integer.parseInt(request.getParameter("cid"));
         String[] raw_gradeids = request.getParameterValues("gradeid");
