@@ -11,7 +11,6 @@ package model;
 public class User {
     private String username;
     private String password;
-    private String displayname;
     private Lecturer lecturer;
     private Student student;
 
@@ -29,14 +28,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getDisplayname() {
-        return displayname;
-    }
-
-    public void setDisplayname(String displayname) {
-        this.displayname = displayname;
     }
 
     public Lecturer getLecturer() {

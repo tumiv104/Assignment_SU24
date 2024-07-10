@@ -12,6 +12,18 @@
         <servlet-name>LoginController</servlet-name>
         <servlet-class>controller.auth.LoginController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StudentViewController</servlet-name>
+        <servlet-class>controller.student.StudentViewController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StudentViewGradeController</servlet-name>
+        <servlet-class>controller.student.StudentViewGradeController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StudentViewExamScheduleController</servlet-name>
+        <servlet-class>controller.student.StudentViewExamScheduleController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LecturerViewExamController</servlet-name>
         <url-pattern>/lecturer</url-pattern>
@@ -23,5 +35,17 @@
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentViewController</servlet-name>
+        <url-pattern>/student</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentViewGradeController</servlet-name>
+        <url-pattern>/grade</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentViewExamScheduleController</servlet-name>
+        <url-pattern>/examschedule</url-pattern>
     </servlet-mapping>
 </web-app>
