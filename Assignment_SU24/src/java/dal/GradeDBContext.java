@@ -114,4 +114,48 @@ public class GradeDBContext extends DBContext<Grade>{
         }
 
     }
+    
+    public ArrayList<Grade> getGradesByEidsSid(int[] eids, int sid) {
+        ArrayList<Grade> grades = new ArrayList<>();
+        String sql = """
+                     SELECT eid,sid,score FROM grades WHERE sid = ? AND (1 > 2)
+                     """;
+        for (int eid : eids) {
+            sql += " OR eid = ? ";
+        }
+        PreparedStatement stm = null;
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setInt(1, sid);
+            for (int i = 0; i < eids.length; i++) {
+                stm.setInt((i + 2), eids[i]);
+            }
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Exam exam = new Exam();
+                exam.setId(rs.getInt("eid"));
+
+                Student s = new Student();
+                s.setId(rs.getInt("sid"));
+
+                Grade g = new Grade();
+                g.setExam(exam);
+                g.setStudent(s);
+                g.setScore(rs.getFloat("score"));
+
+                grades.add(g);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(GradeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                stm.close();
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(GradeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return grades;
+    }
 }
