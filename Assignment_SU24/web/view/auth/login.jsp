@@ -51,6 +51,9 @@
             .login-container input[type="submit"]:hover {
                 background-color: #45a049;
             }
+            .login-container span {
+                color: red;
+            }
         </style>
     </head>
     <body>
@@ -61,6 +64,7 @@
                 <input type="text" name="username"/> 
                 <label for="password">Password</label>
                 <input type="password" name="password"/>
+                <span>${requestScope.mess}</span>
                 <input type="submit" value="login"/>
             </form>
         </div>
