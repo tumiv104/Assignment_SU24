@@ -81,7 +81,7 @@ public class TakeExamController extends BaseRequiredLecturerAuthenticationContro
         for (String raw_gradeid : raw_gradeids) {
             int sid = Integer.parseInt(raw_gradeid.split("_")[0]);
             int eid = Integer.parseInt(raw_gradeid.split("_")[1]);
-            eids.add(eid + "");//redirect later
+            eids.add(eid + "");
             String raw_score = request.getParameter("grade" + sid + "_" + eid);
             if (raw_score.length() > 0) {
                 Grade g = new Grade();

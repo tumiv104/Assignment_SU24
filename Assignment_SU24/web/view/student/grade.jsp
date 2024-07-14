@@ -21,6 +21,8 @@
                             ${e.assessment.name}_${e.assessment.weight}
                         </th>
                     </c:forEach>
+                        <th>Average</th>
+                        <th>Status</th>
                 <tr/>
                 <tr>
                     <c:forEach items="${requestScope.exams}" var="e">
@@ -32,6 +34,8 @@
                                    </c:forEach>
                         </td>
                     </c:forEach>
+                        <td>${requestScope.avg}</td>
+                        <td>${requestScope.status}</td>
                 </tr>
             </table>
         </form>

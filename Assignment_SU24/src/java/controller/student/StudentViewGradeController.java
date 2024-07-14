@@ -49,6 +49,37 @@ public class StudentViewGradeController extends BaseRequiredStudentAuthenticatio
         }
         GradeDBContext gdb = new GradeDBContext();
         ArrayList<Grade> grades = gdb.getGradesByEidsSid(eids, student.getId());
+        String status = "";
+        if (grades.size() < exams.size()) {
+            status = "Studying";
+        }
+        if (!status.equals("Studying")) {
+            status = "Failed";
+            boolean check = true;
+            for (int j = 0; j < grades.size(); j++) {
+                Grade get = grades.get(j);
+                if (get.getScore() == 0) {
+                    check = false;
+                    break;
+                }
+                if (get.getExam().getAssessment().getName().equals("Final Exam")) {
+                    if (get.getScore() < 4) {
+                        check = false;
+                        break;
+                    }
+                }
+            }
+            float avg = 0;
+            for (int j = 0; j < grades.size(); j++) {
+                Grade get = grades.get(j);
+                avg += get.getScore() * (get.getExam().getAssessment().getWeight());
+            }
+            if (avg >= 5 && check) {
+                status = "Passed";
+            }
+            request.setAttribute("avg", avg);
+        }
+        request.setAttribute("status", status);
         request.setAttribute("exams", exams);
         request.setAttribute("grades", grades);
         request.getRequestDispatcher("view/student/grade.jsp").forward(request, response);

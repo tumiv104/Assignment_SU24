@@ -53,12 +53,11 @@ public class LoginController extends HttpServlet {
         if(user !=null)
         {
             request.getSession().setAttribute("user", user);
-            response.getWriter().println("login successful: ");
             if (user.getLecturer() != null) {
-                response.getWriter().print(user.getLecturer().getName());
+                response.sendRedirect("lecturer");
             }
             if (user.getStudent() != null) {
-                response.getWriter().print(user.getStudent().getName());
+                response.sendRedirect("student");
             }
         }
         else

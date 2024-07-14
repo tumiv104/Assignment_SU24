@@ -8,6 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Assessment;
 import model.Exam;
 import model.Grade;
 import model.Student;
@@ -118,11 +119,15 @@ public class GradeDBContext extends DBContext<Grade>{
     public ArrayList<Grade> getGradesByEidsSid(int[] eids, int sid) {
         ArrayList<Grade> grades = new ArrayList<>();
         String sql = """
-                     SELECT eid,sid,score FROM grades WHERE sid = ? AND (1 > 2)
+                     SELECT g.eid, g.sid,score, a.aname, a.weight FROM grades g
+                     LEFT JOIN exams e ON g.eid = e.eid
+                     LEFT JOIN assesments a ON e.aid = a.aid
+                     WHERE g.sid = ? AND ((1 > 2)
                      """;
         for (int eid : eids) {
-            sql += " OR eid = ? ";
+            sql += " OR g.eid = ? ";
         }
+        sql +=")";
         PreparedStatement stm = null;
         try {
             stm = connection.prepareStatement(sql);
@@ -133,8 +138,14 @@ public class GradeDBContext extends DBContext<Grade>{
 
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
+                Assessment a = new Assessment();
+                a.setName(rs.getString("aname"));
+                a.setWeight(rs.getFloat("weight"));
+                
                 Exam exam = new Exam();
                 exam.setId(rs.getInt("eid"));
+                exam.setAssessment(a);
+                
 
                 Student s = new Student();
                 s.setId(rs.getInt("sid"));
