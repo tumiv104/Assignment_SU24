@@ -17,8 +17,8 @@ import model.Student;
  *
  * @author Nitro
  */
-public class GradeDBContext extends DBContext<Grade>{
-    
+public class GradeDBContext extends DBContext<Grade> {
+
     public ArrayList<Grade> getGradesByEids(int[] eids) {
         ArrayList<Grade> grades = new ArrayList<>();
         String sql = """
@@ -61,14 +61,14 @@ public class GradeDBContext extends DBContext<Grade>{
         }
         return grades;
     }
-    
+
     public void saveGradesByCourse(int cid, ArrayList<Grade> grades) {
         PreparedStatement stm_delete = null;
         ArrayList<PreparedStatement> stm_insests = new ArrayList<>();
         try {
             connection.setAutoCommit(false);
-            
-            String sql_remove_records = "DELETE FROM grades WHERE [sid] IN (SELECT [sid] FROM students_courses WHERE cid=?)";
+
+            String sql_remove_records = "DELETE FROM grades WHERE (1>2) ";
             String sql_insert_grades = "INSERT INTO [grades]\n"
                     + "           ([eid]\n"
                     + "           ,[sid]\n"
@@ -77,11 +77,13 @@ public class GradeDBContext extends DBContext<Grade>{
                     + "           (?\n"
                     + "           ,?\n"
                     + "           ,?)";
-            
+            for (int i = 0; i < grades.size(); i++) {
+                sql_remove_records += "OR sid=" + grades.get(i).getStudent().getId()
+                        + "AND eid =" + grades.get(i).getExam().getId();
+            }
             stm_delete = connection.prepareStatement(sql_remove_records);
-            stm_delete.setInt(1, cid);
             stm_delete.executeUpdate();
-            
+
             for (Grade grade : grades) {
                 PreparedStatement stm_insert = connection.prepareStatement(sql_insert_grades);
                 stm_insert.setInt(1, grade.getExam().getId());
@@ -90,7 +92,7 @@ public class GradeDBContext extends DBContext<Grade>{
                 stm_insert.executeUpdate();
                 stm_insests.add(stm_insert);
             }
-            
+
             connection.commit();
         } catch (SQLException ex) {
             Logger.getLogger(GradeDBContext.class.getName()).log(Level.SEVERE, null, ex);
@@ -99,9 +101,7 @@ public class GradeDBContext extends DBContext<Grade>{
             } catch (SQLException ex1) {
                 Logger.getLogger(GradeDBContext.class.getName()).log(Level.SEVERE, null, ex1);
             }
-        }
-        finally
-        {
+        } finally {
             try {
                 connection.setAutoCommit(true);
                 stm_delete.close();
@@ -115,7 +115,7 @@ public class GradeDBContext extends DBContext<Grade>{
         }
 
     }
-    
+
     public ArrayList<Grade> getGradesByEidsSid(int[] eids, int sid) {
         ArrayList<Grade> grades = new ArrayList<>();
         String sql = """
@@ -127,7 +127,7 @@ public class GradeDBContext extends DBContext<Grade>{
         for (int eid : eids) {
             sql += " OR g.eid = ? ";
         }
-        sql +=")";
+        sql += ")";
         PreparedStatement stm = null;
         try {
             stm = connection.prepareStatement(sql);
@@ -141,11 +141,10 @@ public class GradeDBContext extends DBContext<Grade>{
                 Assessment a = new Assessment();
                 a.setName(rs.getString("aname"));
                 a.setWeight(rs.getFloat("weight"));
-                
+
                 Exam exam = new Exam();
                 exam.setId(rs.getInt("eid"));
                 exam.setAssessment(a);
-                
 
                 Student s = new Student();
                 s.setId(rs.getInt("sid"));
