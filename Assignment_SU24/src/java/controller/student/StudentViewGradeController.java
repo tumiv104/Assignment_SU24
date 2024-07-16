@@ -72,7 +72,7 @@ public class StudentViewGradeController extends BaseRequiredStudentAuthenticatio
             float avg = 0;
             for (int j = 0; j < grades.size(); j++) {
                 Grade get = grades.get(j);
-                avg += get.getScore() * (get.getExam().getAssessment().getWeight());
+                avg += get.getScore() * (get.getExam().getAssessment().getWeight()/100);
             }
             if (avg >= 5 && check) {
                 status = "Passed";

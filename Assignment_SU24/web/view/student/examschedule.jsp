@@ -86,7 +86,7 @@
                     <c:forEach items="${requestScope.exams}" var="e">
                         <tr>
                             <td>${e.assessment.name}</td>
-                            <td>${e.assessment.weight}</td>
+                            <td>${e.assessment.weight} %</td>
                             <td>${e.date}</td>
                             <td>${e.duration} minutes</td>
                         </tr>

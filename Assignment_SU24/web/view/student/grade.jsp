@@ -80,7 +80,7 @@
                     <tr>
                         <c:forEach items="${requestScope.exams}" var="e">
                             <th>
-                                ${e.assessment.name}_${e.assessment.weight}
+                                ${e.assessment.name}<br>${e.assessment.weight} %
                             </th>
                         </c:forEach>
                         <th>Average</th>
